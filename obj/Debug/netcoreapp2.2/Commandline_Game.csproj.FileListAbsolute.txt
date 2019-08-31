@@ -1,0 +1,11 @@
+D:\School\C#\Commandline_Game\bin\Debug\netcoreapp2.2\Commandline_Game.deps.json
+D:\School\C#\Commandline_Game\bin\Debug\netcoreapp2.2\Commandline_Game.runtimeconfig.json
+D:\School\C#\Commandline_Game\bin\Debug\netcoreapp2.2\Commandline_Game.runtimeconfig.dev.json
+D:\School\C#\Commandline_Game\bin\Debug\netcoreapp2.2\Commandline_Game.dll
+D:\School\C#\Commandline_Game\bin\Debug\netcoreapp2.2\Commandline_Game.pdb
+D:\School\C#\Commandline_Game\obj\Debug\netcoreapp2.2\Commandline_Game.csprojAssemblyReference.cache
+D:\School\C#\Commandline_Game\obj\Debug\netcoreapp2.2\Commandline_Game.csproj.CoreCompileInputs.cache
+D:\School\C#\Commandline_Game\obj\Debug\netcoreapp2.2\Commandline_Game.AssemblyInfoInputs.cache
+D:\School\C#\Commandline_Game\obj\Debug\netcoreapp2.2\Commandline_Game.AssemblyInfo.cs
+D:\School\C#\Commandline_Game\obj\Debug\netcoreapp2.2\Commandline_Game.dll
+D:\School\C#\Commandline_Game\obj\Debug\netcoreapp2.2\Commandline_Game.pdb
