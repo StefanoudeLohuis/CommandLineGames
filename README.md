@@ -19,5 +19,5 @@ If you're not interested in editing/viewing the project you don't have to do the
 
 ### 3. suggestions for new commandline games
 
-For for future game for this program, I enjoy suggestions.<br>
+For future games for this program, I enjoy suggestions.<br>
 Mail them to " GameDeveloper.MyMail@gmail.com "
