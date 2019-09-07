@@ -3,15 +3,15 @@ using games;
 
 namespace Menus
 {
-    class Menu
+    class BaseMenu
     {
         private CommandlineRAW commandlineRAW = new CommandlineRAW();
 
         private string menuOptions;
 
-        public Menu(string baseMessage, string[] menuOptions)
+        public BaseMenu(string baseMessage, string[] menuOptions)
         {
-            this.menuOptions = baseMessage + commandlineRAW.getPause() + commandlineRAW.getEnter() + commandlineRAW.getEnter();
+            this.menuOptions = baseMessage + commandlineRAW.getPause() + commandlineRAW.getEnter(2);
 
             for (int i = 0; i < menuOptions.Length; i++)
             {
@@ -34,7 +34,7 @@ namespace Menus
         }
     }
 
-    class StartMenu : Menu
+    class StartMenu : BaseMenu
     {
         private CommandlineRAW commandlineRAW = new CommandlineRAW();
         private static string[] startMenuOptions = { "Play", "Quit" };
@@ -64,7 +64,7 @@ namespace Menus
                 case "quit":
                     break;
                 default:
-                    commandlineRAW.displayBadInputMessage();
+                    commandlineRAW.writeToCommandline("---Incorrect Input---" + commandlineRAW.getEnter(), "Medium");
                     //Starts the same funtion again. This will happen until the user inputs one of the cases above.
                     takeOver();
                     break;
@@ -72,7 +72,7 @@ namespace Menus
         }
     }
 
-    class GameMenu : Menu
+    class GameMenu : BaseMenu
     {
         private CommandlineRAW commandlineRAW = new CommandlineRAW();
         private static string[] gameMenuOptions = { "Three Door Game", "Quit" };
@@ -110,7 +110,7 @@ namespace Menus
                 case "quit":
                     break;
                 default:
-                    commandlineRAW.displayBadInputMessage();
+                    commandlineRAW.writeToCommandline("---Incorrect Input---" + commandlineRAW.getEnter(), "Medium");
                     //Starts the same funtion again. This will happen until the user inputs one of the cases above.
                     takeOver();
                     break;
@@ -118,7 +118,7 @@ namespace Menus
         }
     }
 
-    class QuickMenu : Menu
+    class QuickMenu : BaseMenu
     {
 
         private CommandlineRAW commandlineRAW = new CommandlineRAW();
@@ -140,7 +140,7 @@ namespace Menus
                 case "no":
                     return false;
                 default:
-                    commandlineRAW.displayBadInputMessage();
+                    commandlineRAW.writeToCommandline("---Incorrect Input---" + commandlineRAW.getEnter(), "Medium");
                     //Starts the same funtion again. This will happen until the user inputs one of the cases above.
                     return yesOrNo();
             }

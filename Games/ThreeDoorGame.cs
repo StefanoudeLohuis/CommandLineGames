@@ -4,17 +4,12 @@ using System;
 
 namespace games
 {
-    class Game
-    {
-        private CommandlineRAW commandlineRAW = new CommandlineRAW();
-        public Game() { }
-
-    }
     class ThreeDoorGame
     {
         private CommandlineRAW commandlineRAW = new CommandlineRAW();
         private string startMessage;
         private string goalObject;
+
         public ThreeDoorGame()
         {
             startMessage = "Welcome to the Three Door Game." + commandlineRAW.getPause() + commandlineRAW.getEnter() +
@@ -29,7 +24,7 @@ namespace games
 
             this.goalObject = commandlineRAW.readCommandline(false);
 
-            startMessage = "It's your job to find the " + goalObject + "." + commandlineRAW.getPause() + commandlineRAW.getEnter() + commandlineRAW.getEnter();
+            startMessage = "It's your job to find the " + goalObject + "." + commandlineRAW.getPause() + commandlineRAW.getEnter(2);
             commandlineRAW.writeToCommandline(startMessage, "Fast");
         }
 
@@ -56,7 +51,7 @@ namespace games
         public void play()
         {
 
-            //Part one. Let the user decide how many doors he wants.
+            //Part One. Let the user decide how many doors he wants.
             howManyDoorsText();
             int amountOfDoors = getNumberBetween(3, 100);
             //---------------------------------------
@@ -71,87 +66,23 @@ namespace games
             //Part Four. "Erase" the doors behind which the prize isn't.
             //If he picked the door where the prize is behind, a random door will be returned.
             //If he didn't pick the correct door, his selected door and the correct door will be returned.
-
             int remainingDoor = eraseDoors(selectedDoor, doors);
 
             RemoveDoorsText(selectedDoor + 1, remainingDoor + 1);
             //---------------------------------------
 
-            //Part Five. Let the user decide iF he wants to switch doors.
-
-            QuickMenu switchDoors = new QuickMenu("Do you want to switch doors?");
-            switchDoors.showMenuOptions();
-
-            if (switchDoors.yesOrNo())
-            {
-                selectedDoor = remainingDoor;
-            }
-             //---------------------------------------
+            //Part Five. Let the user decide if he wants to switch doors.
+            selectedDoor = switchDoors(selectedDoor, remainingDoor);
+            //---------------------------------------
 
             //Part six. Check the door the user selected in the end and wrap up the game.
             FinishGame(selectedDoor, doors);
-             //---------------------------------------
+            //---------------------------------------
 
             //Part seven. Give the option to play again.
-            QuickMenu playAgain = new QuickMenu("Want to play again?");
-            playAgain.showMenuOptions();
-            if (playAgain.yesOrNo())
-            {
-                //"Restarts" the game.
-                play();
-            }
-             //---------------------------------------
+            playAgain();
+            //---------------------------------------
 
-        }
-
-        public void FinishGame(int selectedDoor, bool[] doors)
-        {
-            if (checkDoor(selectedDoor, doors))
-            {
-                commandlineRAW.writeToCommandline("Congratulations, you found the " + goalObject + commandlineRAW.getPause() + commandlineRAW.getEnter(), "Medium");
-            }
-            else
-            {
-                commandlineRAW.writeToCommandline("Unfortunately you didn't manage to find the " + goalObject + commandlineRAW.getPause() + commandlineRAW.getEnter(), "Medium");
-            }
-        }
-
-        public bool checkDoor(int selectedDoor, bool[] doors)
-        {
-            if (doors[selectedDoor])
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public int eraseDoors(int selectedDoor, bool[] doors)
-        {
-            Random random = new Random();
-
-            if (doors[selectedDoor])
-            {
-                int randomDoorThatHasToClose = random.Next(0, doors.Length);
-
-                //Makes sure that the random door that has to close isn't the same as the selected door.
-                while (randomDoorThatHasToClose == selectedDoor)
-                {
-                    randomDoorThatHasToClose = random.Next(0, doors.Length);
-                }
-
-                return randomDoorThatHasToClose;
-            }
-            else
-            {
-                for (int i = 0; i < doors.Length; i++)
-                {
-                    if (doors[i])
-                    {
-                        return i;
-                    }
-                }
-                return 0;
-            }
         }
 
         public int getNumberBetween(int min = 0, int max = 100)
@@ -165,32 +96,10 @@ namespace games
             }
             else
             {
-                commandlineRAW.writeToCommandline("That number is too high or low" + commandlineRAW.getEnter(), "Medium");
+                commandlineRAW.writeToCommandline("That number is too high or low." + commandlineRAW.getEnter() +
+                                                  "The number has to be between " + min + " and " + max + commandlineRAW.getEnter(), "Medium");
                 return getNumberBetween(min, max);
             }
-        }
-
-        public bool[] createDoors(int amountOfDoors)
-        {
-            bool[] doors = new bool[amountOfDoors];
-
-            Random random = new Random();
-
-            int prizeDoor = random.Next(0, amountOfDoors);
-
-            for (int i = 0; i < amountOfDoors; i++)
-            {
-                if (i == prizeDoor)
-                {
-                    doors[i] = true;
-                }
-                else
-                {
-                    doors[i] = false;
-                }
-            }
-
-            return doors;
         }
 
         public int getNumberInput()
@@ -205,8 +114,94 @@ namespace games
             }
             else
             {
-                commandlineRAW.displayBadInputMessage();
+                commandlineRAW.writeToCommandline("---Incorrect Input---" + commandlineRAW.getEnter(), "Medium");
                 return getNumberInput();
+            }
+        }
+
+        public bool[] createDoors(int amountOfDoors)
+        {
+            //At default the whole array is false.
+            bool[] doors = new bool[amountOfDoors];
+
+            Random random = new Random();
+
+            //Creates an int between 0 and N-1. Perfect for an array.
+            int prizeDoor = random.Next(0, amountOfDoors);
+
+            //Inserts winning door into the array.
+            doors[prizeDoor] = true;
+
+            return doors;
+        }
+
+        public int eraseDoors(int selectedDoor, bool[] doors)
+        {
+            //Selected door has the prize
+            if (doors[selectedDoor])
+            {
+                Random random = new Random();
+                int randomEmptyDoor = random.Next(0, doors.Length);
+
+                //Makes sure that the random door that doesn't have the prize isn't the same as the selected door.
+                while (randomEmptyDoor == selectedDoor)
+                {
+                    randomEmptyDoor = random.Next(0, doors.Length);
+                }
+
+                return randomEmptyDoor;
+            }
+            //"Erase" all doors except for the one with prize and selected door.
+            else
+            {
+                int doorWithPrize = 0;
+
+                for (int i = 0; i < doors.Length; i++)
+                {
+                    if (doors[i])
+                    {
+                        doorWithPrize = i;
+                    }
+                }
+
+                return doorWithPrize;
+            }
+        }
+
+        public int switchDoors(int selectedDoor, int remainingDoor)
+        {
+            QuickMenu switchDoors = new QuickMenu("Do you want to switch doors?");
+            switchDoors.showMenuOptions();
+
+            if (switchDoors.yesOrNo())
+            {
+                return remainingDoor;
+            }
+
+            return selectedDoor;
+        }
+
+        public void FinishGame(int selectedDoor, bool[] doors)
+        {
+            //if door has the prize.
+            if (doors[selectedDoor])
+            {
+                commandlineRAW.writeToCommandline("Congratulations, you found the " + goalObject + commandlineRAW.getPause() + commandlineRAW.getEnter(2), "Medium");
+            }
+            else
+            {
+                commandlineRAW.writeToCommandline("Unfortunately you didn't manage to find the " + goalObject + commandlineRAW.getPause() + commandlineRAW.getEnter(2), "Medium");
+            }
+        }
+
+        public void playAgain()
+        {
+            QuickMenu playAgain = new QuickMenu("Want to play again?");
+            playAgain.showMenuOptions();
+            if (playAgain.yesOrNo())
+            {
+                //"Restarts" the game.
+                play();
             }
         }
     }
