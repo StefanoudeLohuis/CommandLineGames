@@ -4,7 +4,7 @@ This is a C# program which contains a few commandline games.
 ### 1. Prerequisites
 Follow [this link](https://docs.microsoft.com/en-us/dotnet/core/tutorials/with-visual-studio-code) to install necessities to run the project.
 
-If you're not interested in editing/viewing the project You dont have to do the 1st and 3rd step.
+If you're not interested in editing/viewing the project you don't have to do the 1st and 3rd step.
 
 ---
 
